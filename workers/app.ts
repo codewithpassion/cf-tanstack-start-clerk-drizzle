@@ -1,9 +1,8 @@
-import {
-    createStartHandler,
-    defaultStreamHandler,
-} from '@tanstack/react-start/server'
 import serverEntry from "@tanstack/react-start/server-entry"
 import { Hono } from "hono";
+import { getAuth } from "@hono/clerk-auth";
+import { clerkMiddleware } from "./clerkMiddleWare";
+
 
 interface CloudflareVariables {
 }
@@ -15,18 +14,26 @@ export type AppType = {
 
 const app = new Hono<AppType>();
 
+// Apply Clerk authentication middleware globally
+app.use('*', clerkMiddleware({
+    publishableKey: process.env.VITE_CLERK_PUBLISHABLE_KEY!,
+    secretKey: process.env.CLERK_SECRET_KEY!,
+}))
+
+
 app.get("/api/health", (c) => {
-    return c.json({ status: "ok" });
+    const auth = getAuth(c);
+    return c.json({
+        status: "ok",
+        authenticated: !!auth?.userId,
+        userId: auth?.userId || null
+    });
 });
 
 
-// const fetch = createStartHandler(defaultStreamHandler)
 
 app.use(async (c) => {
     return serverEntry.fetch(c.req.raw);
-    // const s = new ServerEntry<AppType>()
-    // return serverEntry.handleRequest(c.req.raw);
-    // return fetch(c.req.raw);
 });
 
 
