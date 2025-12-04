@@ -12,6 +12,9 @@ const config = defineConfig({
       'use-sync-external-store/shim/index.js': path.resolve(__dirname, 'src/shim-use-sync-external-store.ts'),
     },
   },
+  server: {
+    port: 4000
+  },
   build: {
     rollupOptions: {
       // external: ['@clerk/backend']

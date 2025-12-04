@@ -1,7 +1,5 @@
 import { useUser } from "@clerk/tanstack-react-start";
-import { useConvexAuth } from "convex/react";
 import { createContext, useCallback, useEffect, useState } from "react";
-import { useClerkConvexSync } from "../hooks/use-clerk-convex-sync";
 import { PermissionChecker, rolesHavePermission } from "../lib/permissions";
 import type { Permission } from "../lib/permissions";
 
@@ -31,28 +29,12 @@ export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const { user, isLoaded: isUserLoaded, isSignedIn } = useUser();
-	const { isAuthenticated: isConvexAuthtenticated, isLoading } =
-		useConvexAuth();
-
-	// Sync Clerk user to Convex database
-	useClerkConvexSync();
 
 	// Track if initial auth load has ever completed
 	const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
-	// useEffect(() => {
-	// 	console.log({
-	// 		user,
-	// 		isUserLoaded,
-	// 		isSignedIn,
-	// 		isConvexAuthtenticated,
-	// 		isLoading,
-	// 	});
-	// }, [user, isUserLoaded, isSignedIn, isConvexAuthtenticated, isLoading]);
-
 	// Determine if we're still in the initial pending state
-	const isInitiallyPending =
-		!isUserLoaded || !isSignedIn || isLoading || !isConvexAuthtenticated;
+	const isInitiallyPending = !isUserLoaded || !isSignedIn;
 
 	// Once auth has loaded successfully, mark it and never go back to pending
 	useEffect(() => {
@@ -63,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	// isPending only reflects initial load, not subsequent reconnections
 	const isPending = !hasInitiallyLoaded;
-	const isAuthenticated = (isSignedIn && isConvexAuthtenticated) === true;
+	const isAuthenticated = (isSignedIn) === true;
 
 	// Get roles from Clerk's publicMetadata
 	const userRoles = (user?.publicMetadata?.roles as UserRole[]) || ["user"];

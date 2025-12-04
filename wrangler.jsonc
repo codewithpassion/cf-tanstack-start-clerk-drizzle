@@ -31,8 +31,15 @@
 	 */
 	"vars": {
 		"MY_VARIABLE": "production_value",
-		"VITE_API_KEY": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-	}
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_id": "2060fb8d-100e-4ec5-8767-6992147757e5",
+			"database_name": "app-db"
+		}
+	],
+
 	/**
 	 * Note: Use secrets to store sensitive data.
 	 * https://developers.cloudflare.com/workers/configuration/secrets/

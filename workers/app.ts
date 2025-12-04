@@ -2,15 +2,10 @@ import serverEntry from "@tanstack/react-start/server-entry"
 import { Hono } from "hono";
 import { getAuth } from "@hono/clerk-auth";
 import { clerkMiddleware } from "@hono/clerk-auth";
+import { D1DbMiddleware } from "./middleware";
+import { AppType } from "./types";
+import { demo } from "@/database/schema";
 
-
-interface CloudflareVariables {
-}
-
-export type AppType = {
-    Bindings: Cloudflare.Env;
-    Variables: CloudflareVariables;
-};
 
 const app = new Hono<AppType>();
 
@@ -20,6 +15,7 @@ app.use('*', clerkMiddleware({
     secretKey: process.env.CLERK_SECRET_KEY!,
 }))
 
+app.use(D1DbMiddleware);
 
 app.get("/api/health", (c) => {
     const auth = getAuth(c);
@@ -30,7 +26,13 @@ app.get("/api/health", (c) => {
     });
 });
 
-
+app.get("/api/db-test", async (c) => {
+    const db = c.var.Database;
+    const result = await db.select().from(demo).all();
+    return c.json({
+        dbTest: result,
+    });
+});
 
 app.use(async (c) => {
     return serverEntry.fetch(c.req.raw);
