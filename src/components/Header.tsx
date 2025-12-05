@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
 } from 'lucide-react'
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/tanstack-react-start'
+import { ThemeToggle } from './theme-toggle'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -36,6 +37,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <SignedOut>
             <SignInButton mode="modal">
               <button className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg transition-colors font-medium">

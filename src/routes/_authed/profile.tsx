@@ -27,42 +27,42 @@ function ProfilePage() {
 
   if (!isLoaded) {
     return (
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Loading...</h1>
+      <div className="max-w-2xl mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Loading...</h1>
       </div>
     )
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">User Profile</h1>
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">User Profile</h1>
 
-      <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Client-Side User Data</h2>
-        <div className="space-y-2">
+      <div className="bg-white dark:bg-slate-800 shadow-md rounded-lg p-6 mb-6 border border-slate-200 dark:border-slate-700">
+        <h2 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Client-Side User Data</h2>
+        <div className="space-y-2 text-slate-700 dark:text-slate-300">
           <p>
-            <span className="font-medium">Name:</span>{' '}
+            <span className="font-medium text-slate-900 dark:text-white">Name:</span>{' '}
             {user?.fullName || 'Not provided'}
           </p>
           <p>
-            <span className="font-medium">Email:</span>{' '}
+            <span className="font-medium text-slate-900 dark:text-white">Email:</span>{' '}
             {user?.primaryEmailAddress?.emailAddress || 'Not provided'}
           </p>
           <p>
-            <span className="font-medium">User ID:</span> {user?.id}
+            <span className="font-medium text-slate-900 dark:text-white">User ID:</span> {user?.id}
           </p>
         </div>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Server-Side Data</h2>
-        <div className="space-y-2">
+      <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+        <h2 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Server-Side Data</h2>
+        <div className="space-y-2 text-slate-700 dark:text-slate-300">
           <p>
-            <span className="font-medium">User ID from server:</span>{' '}
+            <span className="font-medium text-slate-900 dark:text-white">User ID from server:</span>{' '}
             {loaderData.userId}
           </p>
           <p>
-            <span className="font-medium">Message:</span>{' '}
+            <span className="font-medium text-slate-900 dark:text-white">Message:</span>{' '}
             {loaderData.serverMessage}
           </p>
         </div>

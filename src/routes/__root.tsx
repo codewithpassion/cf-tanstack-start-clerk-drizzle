@@ -7,6 +7,7 @@ import Header from '../components/Header'
 
 import appCss from '../styles.css?url'
 import { AuthProvider } from '@/contexts/auth-context'
+import { ThemeProvider } from '@/contexts/theme-context'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -39,27 +40,46 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
       <AuthProvider>
-        <html lang="en">
-          <head>
-            <HeadContent />
-          </head>
-          <body>
-            <Header />
-            {children}
-            <TanStackDevtools
-              config={{
-                position: 'bottom-right',
-              }}
-              plugins={[
-                {
-                  name: 'Tanstack Router',
-                  render: <TanStackRouterDevtoolsPanel />,
-                },
-              ]}
-            />
-            <Scripts />
-          </body>
-        </html>
+        <ThemeProvider>
+          <html lang="en">
+            <head>
+              <script dangerouslySetInnerHTML={{
+                __html: `
+                  (function() {
+                    try {
+                      var storageKey = 'theme';
+                      var className = 'dark';
+                      var element = document.documentElement;
+                      var stored = localStorage.getItem(storageKey);
+                      var isDark = stored === 'dark' || (stored === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+                      if (isDark) {
+                        element.classList.add(className);
+                      }
+                    } catch (e) {}
+                  })();
+                `
+              }} />
+              <HeadContent />
+            </head>
+            <body>
+              <Header />
+              {children}
+              <TanStackDevtools
+                config={{
+                  position: 'bottom-right',
+                }}
+                plugins={[
+                  {
+                    name: 'Tanstack Router',
+                    render: <TanStackRouterDevtoolsPanel />,
+                  },
+                ]}
+              />
+              <Scripts />
+            </body>
+          </html>
+        </ThemeProvider>
       </AuthProvider>
     </ClerkProvider>
   )
