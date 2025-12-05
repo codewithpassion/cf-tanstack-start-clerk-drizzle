@@ -3,7 +3,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "sh -c '[ \"$CLAUDE_CODE_REMOTE\" = \"true\" ] && unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy GLOBAL_AGENT_HTTP_PROXY GLOBAL_AGENT_HTTPS_PROXY; vite dev'",
 		"build": "vite build",
 		"serve": "vite preview",
 		"test": "vitest run",
